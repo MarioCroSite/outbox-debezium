@@ -1,0 +1,24 @@
+server:
+  port: 9002
+spring:
+  application:
+    name: inventory-service
+  jpa:
+    show-sql: false
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+    generate-ddl: true
+  datasource:
+    url: jdbc:postgresql://localhost:5434/postgres
+    username: postgres
+    password: postgres
+
+com:
+  mario:
+    kafka:
+      bootstrap-server: "localhost:9092"
+      security-protocol: "PLAINTEXT"
+      consumer-group-id: "inventory-service"
+      trusted-packages: "*"

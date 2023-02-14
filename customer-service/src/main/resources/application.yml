@@ -1,0 +1,24 @@
+server:
+  port: 9003
+spring:
+  application:
+    name: customer-service
+  jpa:
+    show-sql: false
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+    generate-ddl: true
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: postgres
+    password: postgres
+
+com:
+  mario:
+    kafka:
+      bootstrap-server: "localhost:9092"
+      security-protocol: "PLAINTEXT"
+      consumer-group-id: "customer-service"
+      trusted-packages: "*"
