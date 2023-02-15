@@ -41,7 +41,7 @@ public class EventHandlerAdapter implements EventHandlerPort {
 
     @Override
     @KafkaListener(
-            topics = "ORDER.events",
+            topics = {"ORDER.events"},
             containerFactory = "listenerContainer"
     )
     public void handleReserveProductStockRequest(ConsumerRecord<String, String> record) {
@@ -49,18 +49,26 @@ public class EventHandlerAdapter implements EventHandlerPort {
         var value = record.value();
         var eventType = getHeaderAsString(record.headers(), "eventType");
 
-        if(messageLogRepository.existsById((UUID.fromString(key)))) {
-            log.debug("Message with ID {} has already been processed.", key);
+        if (!validEventType(eventType)) {
+            log.debug("Ignoring event of type {}", eventType);
             return;
         }
 
-        switch (eventType) {
-            case RESERVE_CUSTOMER_BALANCE_SUCCESSFULLY -> processReserveProduct(value);
-            default -> log.debug("Ignoring event of type {}", eventType);
+//        if (messageLogRepository.existsById((UUID.fromString(key)))) {
+//            log.debug("Message with ID {} has already been processed.", key);
+//            return;
+//        }
+
+        if (eventType.equals(RESERVE_CUSTOMER_BALANCE_SUCCESSFULLY)) {
+            processReserveProduct(value);
         }
 
         // Marked message is processed
-        messageLogRepository.save(new MessageLog(UUID.fromString(key), Timestamp.from(Instant.now())));
+        //messageLogRepository.save(new MessageLog(UUID.fromString(key), Timestamp.from(Instant.now())));
+    }
+
+    private boolean validEventType(String eventType) {
+        return eventType.equals(RESERVE_CUSTOMER_BALANCE_SUCCESSFULLY);
     }
 
     private void processReserveProduct(String value) {

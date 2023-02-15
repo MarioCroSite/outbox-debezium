@@ -12,8 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.mario.orderservice.infrastructure.message.MessageStatus.ORDER;
-import static com.mario.orderservice.infrastructure.message.MessageStatus.ORDER_CREATED;
+import static com.mario.orderservice.infrastructure.message.MessageStatus.*;
 
 @Repository
 @RequiredArgsConstructor

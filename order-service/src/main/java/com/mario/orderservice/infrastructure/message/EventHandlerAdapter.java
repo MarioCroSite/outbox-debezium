@@ -41,7 +41,7 @@ public class EventHandlerAdapter implements EventHandlerPort {
 
     @Override
     @KafkaListener(
-            topics = "CUSTOMER.events",
+            topics = {"CUSTOMER.events"},
             containerFactory = "listenerContainer"
     )
     public void reserveCustomerBalanceStage(ConsumerRecord<String, String> record) {
@@ -49,10 +49,10 @@ public class EventHandlerAdapter implements EventHandlerPort {
         var value = record.value();
         var eventType = getHeaderAsString(record.headers(), "eventType");
 
-        if(messageLogRepository.existsById((UUID.fromString(key)))) {
-            log.debug("Message with ID {} has already been processed.", key);
-            return;
-        }
+//        if(messageLogRepository.existsById((UUID.fromString(key)))) {
+//            log.debug("Message with ID {} has already been processed.", key);
+//            return;
+//        }
 
         switch (eventType) {
             case RESERVE_CUSTOMER_BALANCE_SUCCESSFULLY -> reserveCustomerBalance(true, value);
@@ -66,7 +66,7 @@ public class EventHandlerAdapter implements EventHandlerPort {
 
     @Override
     @KafkaListener(
-            topics = "PRODUCT.events",
+            topics = {"PRODUCT.events"},
             containerFactory = "listenerContainer"
     )
     public void reserveProductStockStage(ConsumerRecord<String, String> record) {
@@ -74,10 +74,10 @@ public class EventHandlerAdapter implements EventHandlerPort {
         var value = record.value();
         var eventType = getHeaderAsString(record.headers(), "eventType");
 
-        if(messageLogRepository.existsById((UUID.fromString(key)))) {
-            log.debug("Message with ID {} has already been processed.", key);
-            return;
-        }
+//        if(messageLogRepository.existsById((UUID.fromString(key)))) {
+//            log.debug("Message with ID {} has already been processed.", key);
+//            return;
+//        }
 
         switch (eventType) {
             case RESERVE_PRODUCT_STOCK_SUCCESSFULLY -> reserveProductStock(true, value);
@@ -86,7 +86,7 @@ public class EventHandlerAdapter implements EventHandlerPort {
         }
 
         // Marked message is processed
-        messageLogRepository.save(new MessageLog(UUID.fromString(key), Timestamp.from(Instant.now())));
+        //messageLogRepository.save(new MessageLog(UUID.fromString(key), Timestamp.from(Instant.now())));
     }
 
     private void reserveCustomerBalance(boolean success, String value) {

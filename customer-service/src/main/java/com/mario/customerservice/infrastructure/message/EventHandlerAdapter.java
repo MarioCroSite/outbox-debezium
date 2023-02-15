@@ -40,7 +40,7 @@ public class EventHandlerAdapter implements EventHandlerPort {
 
     @Override
     @KafkaListener(
-            topics = "ORDER.events",
+            topics = {"ORDER.events"},
             containerFactory = "listenerContainer"
     )
     public void handleCustomerBalanceRequest(ConsumerRecord<String, String> record) {
@@ -48,19 +48,27 @@ public class EventHandlerAdapter implements EventHandlerPort {
         var value = record.value();
         var eventType = getHeaderAsString(record.headers(), "eventType");
 
-        if(messageLogRepository.existsById((UUID.fromString(key)))) {
-            log.debug("Message with ID {} has already been processed.", key);
+        if (!validEventType(eventType)) {
+            log.debug("Ignoring event of type {}", eventType);
             return;
         }
+
+//        if (messageLogRepository.existsById((UUID.fromString(key)))) {
+//            log.debug("Message with ID {} has already been processed.", key);
+//            return;
+//        }
 
         switch (eventType) {
             case ORDER_CREATED -> orderCreated(value);
             case COMPENSATE_CUSTOMER_BALANCE -> compensateCustomerBalance(value);
-            default -> log.debug("Ignoring event of type {}", eventType);
         }
 
         // Marked message is processed
-        messageLogRepository.save(new MessageLog(UUID.fromString(key), Timestamp.from(Instant.now())));
+        //messageLogRepository.save(new MessageLog(UUID.fromString(key), Timestamp.from(Instant.now())));
+    }
+
+    private boolean validEventType(String eventType) {
+        return eventType.equals(ORDER_CREATED) || eventType.equals(COMPENSATE_CUSTOMER_BALANCE);
     }
 
 
