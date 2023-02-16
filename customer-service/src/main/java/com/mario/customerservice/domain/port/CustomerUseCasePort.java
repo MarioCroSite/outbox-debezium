@@ -1,7 +1,7 @@
 package com.mario.customerservice.domain.port;
 
+import com.mario.common.PlacedOrderEvent;
 import com.mario.customerservice.domain.CustomerRequest;
-import com.mario.customerservice.domain.PlacedOrderEvent;
 import com.mario.customerservice.domain.entity.Customer;
 
 import java.util.UUID;

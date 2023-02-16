@@ -1,4 +1,4 @@
-package com.mario.orderservice.domain;
+package com.mario.common;
 
 import java.math.BigDecimal;
 import java.util.UUID;

@@ -1,27 +1,18 @@
 package com.mario.inventoryservice.infrastructure.message;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mario.inventoryservice.domain.PlacedOrderEvent;
+import com.mario.common.EventHelper;
 import com.mario.inventoryservice.domain.port.EventHandlerPort;
 import com.mario.inventoryservice.domain.port.ProductUseCasePort;
-import com.mario.inventoryservice.infrastructure.message.log.MessageLog;
 import com.mario.inventoryservice.infrastructure.message.log.MessageLogRepository;
 import com.mario.inventoryservice.infrastructure.message.outbox.OutBox;
 import com.mario.inventoryservice.infrastructure.message.outbox.OutBoxRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.common.header.Headers;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-
-import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Objects;
-import java.util.UUID;
 
 import static com.mario.inventoryservice.infrastructure.message.MessageStatus.*;
 
@@ -38,6 +29,8 @@ public class EventHandlerAdapter implements EventHandlerPort {
 
     private final OutBoxRepository outBoxRepository;
 
+    private final EventHelper eventHelper;
+
 
     @Override
     @KafkaListener(
@@ -47,7 +40,7 @@ public class EventHandlerAdapter implements EventHandlerPort {
     public void handleReserveProductStockRequest(ConsumerRecord<String, String> record) {
         var key = record.key();
         var value = record.value();
-        var eventType = getHeaderAsString(record.headers(), "eventType");
+        var eventType = eventHelper.getHeaderAsString(record.headers(), "eventType");
 
         if (!validEventType(eventType)) {
             log.debug("Ignoring event of type {}", eventType);
@@ -72,7 +65,7 @@ public class EventHandlerAdapter implements EventHandlerPort {
     }
 
     private void processReserveProduct(String value) {
-        var placedOrderEvent = deserialize(value);
+        var placedOrderEvent = eventHelper.deserialize(value);
 
         log.debug("Start process reserve product stock {}", placedOrderEvent);
         var outbox = new OutBox();
@@ -91,24 +84,5 @@ public class EventHandlerAdapter implements EventHandlerPort {
         log.debug("Done process reserve product stock {}", placedOrderEvent);
     }
 
-    private PlacedOrderEvent deserialize(String event) {
-        PlacedOrderEvent placedOrderEvent;
-        try {
-            String unescaped = mapper.readValue(event, String.class);
-            placedOrderEvent = mapper.readValue(unescaped, PlacedOrderEvent.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Couldn't deserialize event", e);
-        }
-        return placedOrderEvent;
-    }
-
-    private String getHeaderAsString(Headers headers, String name) {
-        var value = headers.lastHeader(name);
-        if (Objects.isNull(value)) {
-            throw new IllegalArgumentException(
-                    String.format("Expected record header %s not present", name));
-        }
-        return new String(value.value(), StandardCharsets.UTF_8);
-    }
 
 }

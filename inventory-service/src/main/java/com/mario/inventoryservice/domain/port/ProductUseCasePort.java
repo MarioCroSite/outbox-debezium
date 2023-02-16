@@ -1,6 +1,6 @@
 package com.mario.inventoryservice.domain.port;
 
-import com.mario.inventoryservice.domain.PlacedOrderEvent;
+import com.mario.common.PlacedOrderEvent;
 import com.mario.inventoryservice.domain.ProductRequest;
 import com.mario.inventoryservice.domain.entity.Product;
 

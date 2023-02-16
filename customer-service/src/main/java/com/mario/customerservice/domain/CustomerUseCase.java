@@ -1,6 +1,7 @@
 package com.mario.customerservice.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mario.common.PlacedOrderEvent;
 import com.mario.customerservice.domain.entity.Customer;
 import com.mario.customerservice.domain.exception.NotFoundException;
 import com.mario.customerservice.domain.port.CustomerRepositoryPort;

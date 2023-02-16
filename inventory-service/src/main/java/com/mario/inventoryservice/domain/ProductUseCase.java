@@ -1,6 +1,7 @@
 package com.mario.inventoryservice.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mario.common.PlacedOrderEvent;
 import com.mario.inventoryservice.domain.entity.Product;
 import com.mario.inventoryservice.domain.exception.NotFoundException;
 import com.mario.inventoryservice.domain.port.ProductRepositoryPort;
