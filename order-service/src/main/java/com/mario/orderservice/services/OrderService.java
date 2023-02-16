@@ -30,13 +30,13 @@ public class OrderService {
 
     @Transactional
     public void placeOrder(OrderRequest orderRequest) {
-        var order = OrderMapper.toOrder(orderRequest);
+        var order = OrderMapper.toOrderEntity(orderRequest);
 
         order.setCreatedAt(Timestamp.from(Instant.now()));
         order.setStatus(OrderStatus.PENDING);
         order.setId(UUID.randomUUID());
 
-        orderRepository.save(OrderMapper.toEntity(order));
+        orderRepository.save(order);
         outBoxRepository.save(OutBox.builder()
                 .aggregateId(order.getId())
                 .aggregateType(ORDER)

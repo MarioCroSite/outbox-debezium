@@ -1,5 +1,6 @@
 package com.mario.customerservice.controllers;
 
+import com.mario.customerservice.domain.mapper.CustomerMapper;
 import com.mario.customerservice.model.requests.CustomerRequest;
 import com.mario.customerservice.model.Customer;
 import com.mario.customerservice.services.CustomerService;
@@ -20,12 +21,12 @@ public class CustomerController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Customer create(@RequestBody @Valid CustomerRequest customerRequest) {
-        return customerService.create(customerRequest);
+        return CustomerMapper.toCustomer(customerService.create(customerRequest));
     }
 
     @GetMapping("/{customerId}")
     public Customer findById(@PathVariable UUID customerId) {
-        return customerService.findById(customerId);
+        return CustomerMapper.toCustomer(customerService.findById(customerId));
     }
 
 }

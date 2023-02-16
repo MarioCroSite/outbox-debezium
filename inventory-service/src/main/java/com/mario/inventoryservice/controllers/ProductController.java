@@ -1,5 +1,6 @@
 package com.mario.inventoryservice.controllers;
 
+import com.mario.inventoryservice.domain.mapper.ProductMapper;
 import com.mario.inventoryservice.model.requests.ProductRequest;
 import com.mario.inventoryservice.model.Product;
 import com.mario.inventoryservice.services.ProductService;
@@ -23,12 +24,12 @@ public class ProductController {
     @ResponseStatus(HttpStatus.CREATED)
     public Product create(@RequestBody @Valid ProductRequest productRequest) {
         log.info("Create new product {}", productRequest);
-        return productService.create(productRequest);
+        return ProductMapper.toProduct(productService.create(productRequest));
     }
 
     @GetMapping("/{productId}")
     public Product findById(@PathVariable UUID productId) {
-        return productService.findById(productId);
+        return ProductMapper.toProduct(productService.findById(productId));
     }
 
 }

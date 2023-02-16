@@ -1,9 +1,8 @@
 package com.mario.customerservice.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mario.common.PlacedOrderEvent;
+import com.mario.customerservice.domain.entity.CustomerEntity;
 import com.mario.customerservice.domain.mapper.CustomerMapper;
-import com.mario.customerservice.model.Customer;
 import com.mario.customerservice.domain.exception.NotFoundException;
 import com.mario.customerservice.model.requests.CustomerRequest;
 import com.mario.customerservice.repositories.CustomerRepository;
@@ -18,22 +17,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CustomerService {
 
-    private final ObjectMapper mapper;
-
     private final CustomerRepository customerRepository;
 
-    public Customer findById(UUID customerId) {
+    public CustomerEntity findById(UUID customerId) {
         return customerRepository.findById(customerId)
-                .map(CustomerMapper::toCustomer)
                 .orElseThrow(NotFoundException::new);
     }
 
     @Transactional
-    public Customer create(CustomerRequest customerRequest) {
-        var customer = mapper.convertValue(customerRequest, Customer.class);
+    public CustomerEntity create(CustomerRequest customerRequest) {
+        var customer = CustomerMapper.toEntity(customerRequest);
         customer.setId(UUID.randomUUID());
-        customerRepository.save(CustomerMapper.toEntity(customer));
-        return customer;
+        return customerRepository.save(customer);
     }
 
     @Transactional
@@ -50,7 +45,7 @@ public class CustomerService {
                 customer
                         .getBalance()
                         .subtract(orderEvent.price().multiply(BigDecimal.valueOf(orderEvent.quantity()))));
-        customerRepository.save(CustomerMapper.toEntity(customer));
+        customerRepository.save(customer);
         return true;
     }
 
@@ -61,7 +56,7 @@ public class CustomerService {
                 customer
                         .getBalance()
                         .add(orderEvent.price().multiply(BigDecimal.valueOf(orderEvent.quantity()))));
-        customerRepository.save(CustomerMapper.toEntity(customer));
+        customerRepository.save(customer);
     }
 
 }

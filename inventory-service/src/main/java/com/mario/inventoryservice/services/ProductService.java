@@ -1,8 +1,8 @@
 package com.mario.inventoryservice.services;
 
 import com.mario.common.PlacedOrderEvent;
+import com.mario.inventoryservice.domain.entity.ProductEntity;
 import com.mario.inventoryservice.domain.mapper.ProductMapper;
-import com.mario.inventoryservice.model.Product;
 import com.mario.inventoryservice.domain.exception.NotFoundException;
 import com.mario.inventoryservice.model.requests.ProductRequest;
 import com.mario.inventoryservice.repositories.ProductRepository;
@@ -18,28 +18,28 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public Product findById(UUID productId) {
+    public ProductEntity findById(UUID productId) {
         return productRepository
-                .findById(productId).map(ProductMapper::toProduct)
+                .findById(productId)
                 .orElseThrow(NotFoundException::new);
     }
 
     @Transactional
-    public Product create(ProductRequest productRequest) {
-        var product = ProductMapper.toProduct(productRequest);
+    public ProductEntity create(ProductRequest productRequest) {
+        var product = ProductMapper.toEntity(productRequest);
         product.setId(UUID.randomUUID());
-        productRepository.save(ProductMapper.toEntity(product));
-        return product;
+        return productRepository.save(product);
     }
 
     @Transactional
     public boolean reserveProduct(PlacedOrderEvent orderEvent) {
         var product = findById(orderEvent.productId());
-        if (product.getStocks() - orderEvent.quantity() < 0) {
+        var currentStock = product.getStocks() - orderEvent.quantity();
+        if (currentStock < 0) {
             return false;
         }
-        product.setStocks(product.getStocks() - orderEvent.quantity());
-        productRepository.save(ProductMapper.toEntity(product));
+        product.setStocks(currentStock);
+        productRepository.save(product);
         return true;
     }
 

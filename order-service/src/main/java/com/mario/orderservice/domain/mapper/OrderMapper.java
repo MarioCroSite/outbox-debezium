@@ -31,6 +31,15 @@ public class OrderMapper {
                 .build();
     }
 
+    public static OrderEntity toOrderEntity(OrderRequest orderRequest) {
+        return OrderEntity.builder()
+                .customerId(orderRequest.customerId())
+                .productId(orderRequest.productId())
+                .quantity(orderRequest.quantity())
+                .price(orderRequest.price())
+                .build();
+    }
+
     public static Order toOrder(OrderEntity orderEntity) {
         return Order.builder()
                 .id(orderEntity.getId())

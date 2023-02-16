@@ -27,6 +27,14 @@ public class CustomerMapper {
                 .build();
     }
 
+    public static CustomerEntity toEntity(CustomerRequest customerRequest) {
+        return CustomerEntity.builder()
+                .username(customerRequest.username())
+                .fullName(customerRequest.fullName())
+                .balance(customerRequest.balance())
+                .build();
+    }
+
     public static CustomerEntity toEntity(Customer customer) {
         return CustomerEntity.builder()
                 .id(customer.getId())

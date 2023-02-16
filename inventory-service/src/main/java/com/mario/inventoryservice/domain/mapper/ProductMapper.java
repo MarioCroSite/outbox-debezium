@@ -25,6 +25,13 @@ public class ProductMapper {
                 .build();
     }
 
+    public static ProductEntity toEntity(ProductRequest productRequest) {
+        return ProductEntity.builder()
+                .name(productRequest.name())
+                .stocks(productRequest.stocks())
+                .build();
+    }
+
     public static Product toProduct(ProductEntity productEntity) {
         return Product.builder()
                 .id(productEntity.getId())
