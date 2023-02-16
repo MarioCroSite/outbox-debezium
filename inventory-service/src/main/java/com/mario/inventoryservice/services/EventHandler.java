@@ -35,7 +35,7 @@ public class EventHandler {
             topics = {"ORDER.events"},
             containerFactory = "listenerContainer"
     )
-    public void handleReserveProductStockRequest(ConsumerRecord<String, String> record) {
+    public void handleReserveProductStock(ConsumerRecord<String, String> record) {
         var key = record.key();
         var value = record.value();
         var eventType = eventHelper.getHeaderAsString(record.headers(), "eventType");

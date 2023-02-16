@@ -34,7 +34,7 @@ public class EventHandler {
             topics = {"ORDER.events"},
             containerFactory = "listenerContainer"
     )
-    public void handleCustomerBalanceRequest(ConsumerRecord<String, String> record) {
+    public void handleCustomerBalance(ConsumerRecord<String, String> record) {
         var key = record.key();
         var value = record.value();
         var eventType = eventHelper.getHeaderAsString(record.headers(), "eventType");

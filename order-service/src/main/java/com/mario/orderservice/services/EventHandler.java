@@ -35,7 +35,7 @@ public class EventHandler {
             topics = {"CUSTOMER.events"},
             containerFactory = "listenerContainer"
     )
-    public void reserveCustomerBalanceStage(ConsumerRecord<String, String> record) {
+    public void reserveCustomerBalance(ConsumerRecord<String, String> record) {
         var key = record.key();
         var value = record.value();
         var eventType = eventHelper.getHeaderAsString(record.headers(), "eventType");
@@ -59,7 +59,7 @@ public class EventHandler {
             topics = {"PRODUCT.events"},
             containerFactory = "listenerContainer"
     )
-    public void reserveProductStockStage(ConsumerRecord<String, String> record) {
+    public void reserveProductStock(ConsumerRecord<String, String> record) {
         var key = record.key();
         var value = record.value();
         var eventType = eventHelper.getHeaderAsString(record.headers(), "eventType");
