@@ -2,8 +2,8 @@ POST http://localhost:9001/orders
 Content-Type: application/json
 
 {
-  "customerId": "b85838d4-078a-40e1-8448-0693790273a6",
-  "productId": "209b4b56-4130-493a-93cc-aee0d00c6a39",
+  "customerId": "5dcb12a2-99db-4755-88e0-57823b6b2edd",
+  "productId": "d985e95f-c62e-4162-b4bc-241247d3c45b",
   "quantity": 2,
   "price": 20
 }
