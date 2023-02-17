@@ -21,4 +21,5 @@ public class MessageStatus {
 
     public static final String COMPENSATE_CUSTOMER_BALANCE = "COMPENSATE_CUSTOMER_BALANCE";
 
+    public static final String EVENT_TYPE = "eventType";
 }

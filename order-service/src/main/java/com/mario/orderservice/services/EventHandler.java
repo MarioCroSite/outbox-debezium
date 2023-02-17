@@ -38,7 +38,7 @@ public class EventHandler {
     public void reserveCustomerBalance(ConsumerRecord<String, String> record) {
         var key = record.key();
         var value = record.value();
-        var eventType = eventHelper.getHeaderAsString(record.headers(), "eventType");
+        var eventType = eventHelper.getHeaderAsString(record.headers(), EVENT_TYPE);
 
 //        if(messageLogRepository.existsById((UUID.fromString(key)))) {
 //            log.debug("Message with ID {} has already been processed.", key);
@@ -62,7 +62,7 @@ public class EventHandler {
     public void reserveProductStock(ConsumerRecord<String, String> record) {
         var key = record.key();
         var value = record.value();
-        var eventType = eventHelper.getHeaderAsString(record.headers(), "eventType");
+        var eventType = eventHelper.getHeaderAsString(record.headers(), EVENT_TYPE);
 
 //        if(messageLogRepository.existsById((UUID.fromString(key)))) {
 //            log.debug("Message with ID {} has already been processed.", key);

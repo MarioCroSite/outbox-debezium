@@ -17,4 +17,5 @@ public class MessageStatus {
     public static final String RESERVE_CUSTOMER_BALANCE_SUCCESSFULLY =
             "RESERVE_CUSTOMER_BALANCE_SUCCESSFULLY";
 
+    public static final String EVENT_TYPE = "eventType";
 }

@@ -3,6 +3,7 @@ package com.mario.inventoryservice.util;
 public class MessageStatus {
 
     private MessageStatus() {
+
     }
 
     public static final String PRODUCT = "PRODUCT";
@@ -15,4 +16,5 @@ public class MessageStatus {
     public static final String RESERVE_PRODUCT_STOCK_SUCCESSFULLY =
             "RESERVE_PRODUCT_STOCK_SUCCESSFULLY";
 
+    public static final String EVENT_TYPE = "eventType";
 }

@@ -37,7 +37,7 @@ public class EventHandler {
     public void handleCustomerBalance(ConsumerRecord<String, String> record) {
         var key = record.key();
         var value = record.value();
-        var eventType = eventHelper.getHeaderAsString(record.headers(), "eventType");
+        var eventType = eventHelper.getHeaderAsString(record.headers(), EVENT_TYPE);
 
         if (!validEventType(eventType)) {
             log.debug("Ignoring event of type {}", eventType);
