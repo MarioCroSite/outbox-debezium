@@ -1,6 +1,9 @@
 GET http://localhost:8083/connectors/
 
 ###
+GET http://localhost:18083/connectors/
+
+###
 GET http://localhost:8083/connectors/customer_outbox_connector/status
 
 ###
