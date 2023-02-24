@@ -64,50 +64,50 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
-  debezium-connect-1:
-    container_name: debezium-connect-1
-    image: debezium/connect:2.1.1.Final
-    ports:
-      - 8083:8083
-    environment:
-      GROUP_ID: groupA
-      ADVERTISED_HOST_NAME: "debezium-connect-1"
-      ADVERTISED_PORT: 8083
-      CONFIG_STORAGE_TOPIC: debezium_connect_config
-      OFFSET_STORAGE_TOPIC: debezium_connect_offsets
-      STATUS_STORAGE_TOPIC: debezium_connect_status
-      BOOTSTRAP_SERVERS: broker:29092
-    depends_on:
-      - broker
-      - zookeeper
-
-  debezium-connect-2:
-    container_name: debezium-connect-2
-    image: debezium/connect:2.1.1.Final
-    ports:
-      - 18083:8083
-    environment:
-      GROUP_ID: groupA
-      ADVERTISED_HOST_NAME: "debezium-connect-2"
-      ADVERTISED_PORT: 8083
-      CONFIG_STORAGE_TOPIC: debezium_connect_config
-      OFFSET_STORAGE_TOPIC: debezium_connect_offsets
-      STATUS_STORAGE_TOPIC: debezium_connect_status
-      BOOTSTRAP_SERVERS: broker:29092
-    depends_on:
-      - broker
-      - zookeeper
-
-  debezium-ui:
-    container_name: debezium-ui
-    image: debezium/debezium-ui:2.1.1.Final
-    depends_on:
-      - debezium-connect-1
-      - debezium-connect-2
-    ports:
-      - "8050:8080"
-    environment:
-      - KAFKA_CONNECT_URIS=http://debezium-connect-1:8083,http://debezium-connect-2:8083
+#  debezium-connect-1:
+#    container_name: debezium-connect-1
+#    image: debezium/connect:2.1.1.Final
+#    ports:
+#      - 8083:8083
+#    environment:
+#      GROUP_ID: groupA
+#      ADVERTISED_HOST_NAME: "debezium-connect-1"
+#      ADVERTISED_PORT: 8083
+#      CONFIG_STORAGE_TOPIC: debezium_connect_config
+#      OFFSET_STORAGE_TOPIC: debezium_connect_offsets
+#      STATUS_STORAGE_TOPIC: debezium_connect_status
+#      BOOTSTRAP_SERVERS: broker:29092
+#    depends_on:
+#      - broker
+#      - zookeeper
+#
+#  debezium-connect-2:
+#    container_name: debezium-connect-2
+#    image: debezium/connect:2.1.1.Final
+#    ports:
+#      - 18083:8083
+#    environment:
+#      GROUP_ID: groupA
+#      ADVERTISED_HOST_NAME: "debezium-connect-2"
+#      ADVERTISED_PORT: 8083
+#      CONFIG_STORAGE_TOPIC: debezium_connect_config
+#      OFFSET_STORAGE_TOPIC: debezium_connect_offsets
+#      STATUS_STORAGE_TOPIC: debezium_connect_status
+#      BOOTSTRAP_SERVERS: broker:29092
+#    depends_on:
+#      - broker
+#      - zookeeper
+#
+#  debezium-ui:
+#    container_name: debezium-ui
+#    image: debezium/debezium-ui:2.1.1.Final
+#    depends_on:
+#      - debezium-connect-1
+#      - debezium-connect-2
+#    ports:
+#      - "8050:8080"
+#    environment:
+#      - KAFKA_CONNECT_URIS=http://debezium-connect-1:8083,http://debezium-connect-2:8083
 
   kafdrop:
     image: obsidiandynamics/kafdrop:3.30.0
@@ -118,3 +118,15 @@ services:
       - 9000:9000
     environment:
       KAFKA_BROKERCONNECT: broker:29092
+
+  debezium-server:
+    container_name: debezium-server
+    image: debezium/server:2.1.1.Final
+    depends_on:
+      - broker
+    ports:
+      - 8060:8080
+    volumes:
+      - $PWD/conf:/debezium/conf
+      - $PWD/data:/debezium/data
+

@@ -1,3 +1,3 @@
 https://debezium.io/blog/2019/02/19/reliable-microservices-data-exchange-with-the-outbox-pattern/
 https://debezium.io/documentation/reference/stable/transformations/outbox-event-router.html
-
+https://groups.google.com/g/debezium/c/115Su1Uku4o
