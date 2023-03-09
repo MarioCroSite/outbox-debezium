@@ -48,3 +48,15 @@ Content-Type: application/json
   "quantity": 2,
   "price": 20
 }
+
+### Create Random Order
+
+POST http://localhost:9001/orders
+Content-Type: application/json
+
+{
+  "customerId": "{{$uuid}}",
+  "productId": "{{$uuid}}",
+  "quantity": 2,
+  "price": 20
+}
