@@ -20,8 +20,7 @@ public class EventHelper {
     public PlacedOrderEvent deserialize(String event) {
         PlacedOrderEvent placedOrderEvent;
         try {
-            String unescaped = mapper.readValue(event, String.class);
-            placedOrderEvent = mapper.readValue(unescaped, PlacedOrderEvent.class);
+            placedOrderEvent = mapper.readValue(event, PlacedOrderEvent.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Couldn't deserialize event", e);
         }

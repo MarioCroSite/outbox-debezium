@@ -1,14 +1,4 @@
-POST http://localhost:9001/orders
-Content-Type: application/json
-
-{
-  "customerId": "5dcb12a2-99db-4755-88e0-57823b6b2edd",
-  "productId": "d985e95f-c62e-4162-b4bc-241247d3c45b",
-  "quantity": 2,
-  "price": 20
-}
-
-###
+### Create Customer
 
 POST http://localhost:9003/customers
 Content-Type: application/json
@@ -19,12 +9,15 @@ Content-Type: application/json
   "balance": 250
 }
 
-###
+> {%
+    client.global.set("customer_id", JSON.parse(JSON.stringify(response.body)).id);
+%}
 
-GET http://localhost:9003/customers/52cc2375-3c71-450c-bc28-ca040580de0b
+### Get Customer
+GET http://localhost:9003/customers/{{customer_id}}
 Content-Type: application/json
 
-###
+### Create Product
 
 POST http://localhost:9002/products
 Content-Type: application/json
@@ -34,7 +27,24 @@ Content-Type: application/json
   "stocks": 20
 }
 
-###
+> {%
+    client.global.set("product_id", JSON.parse(JSON.stringify(response.body)).id);
+%}
 
-GET http://localhost:9002/products/d6fc02f7-5b73-4dec-9bb3-23f48af160d0
+### Get Product
+
+GET http://localhost:9002/products/{{product_id}}
 Content-Type: application/json
+
+
+### Create Order
+
+POST http://localhost:9001/orders
+Content-Type: application/json
+
+{
+  "customerId": "{{customer_id}}",
+  "productId": "{{product_id}}",
+  "quantity": 2,
+  "price": 20
+}
