@@ -22,7 +22,7 @@
     "transforms.outbox.route.topic.replacement": "${routedByValue}.events",
     "transforms.outbox.table.fields.additional.placement": "type:header:eventType",
     "transforms.outbox.table.field.event.key": "aggregate_id",
-    "transforms.outbox.table.field.event.payload.id": "aggregate_id",
+    "transforms.outbox.table.field.event.payload": "payload",
     "transforms.outbox.route.by.field": "aggregate_type"
   }
 }
