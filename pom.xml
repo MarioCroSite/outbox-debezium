@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.2</version>
+        <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -24,14 +24,15 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.0.2</spring.version>
-        <postgresql.version>42.5.1</postgresql.version>
-        <lombok.version>1.18.24</lombok.version>
-        <apache.commons.version>3.12.0</apache.commons.version>
-        <hibernate.types.version>2.21.1</hibernate.types.version>
+        <spring.version>3.3.3</spring.version>
+        <spring.kafka.version>3.2.4</spring.kafka.version>
+        <postgresql.version>42.7.4</postgresql.version>
+        <lombok.version>1.18.34</lombok.version>
+        <apache.commons.version>3.17.0</apache.commons.version>
+        <hibernate.types.version>3.8.2</hibernate.types.version>
     </properties>
 
 
@@ -62,8 +63,8 @@
                 <version>${postgresql.version}</version>
             </dependency>
             <dependency>
-                <artifactId>hibernate-types-60</artifactId>
-                <groupId>com.vladmihalcea</groupId>
+                <groupId>io.hypersistence</groupId>
+                <artifactId>hypersistence-utils-hibernate-63</artifactId>
                 <version>${hibernate.types.version}</version>
             </dependency>
 
@@ -71,7 +72,7 @@
             <dependency>
                 <groupId>org.springframework.kafka</groupId>
                 <artifactId>spring-kafka</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring.kafka.version}</version>
             </dependency>
 
             <!-- Commons -->
@@ -98,7 +99,7 @@
                 <groupId>org.springframework.kafka</groupId>
                 <artifactId>spring-kafka-test</artifactId>
                 <scope>test</scope>
-                <version>${spring.version}</version>
+                <version>${spring.kafka.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
