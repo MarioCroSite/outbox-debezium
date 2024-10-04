@@ -29,6 +29,25 @@ a better solution is to use the CDC mechanism through the outbox pattern.
 ![SynchronizationDataBetweenDifferentSystems.png](art/synchronization_data_between_different_systems.png)
 
 
+## Key Components
+- Common module contains pojo event classes through which information is distributed between different Spring Boot applications
+- Order service module it is used to create an order and track the entire process until the order is placed or cancelled
+- Customer service module it is used to verify the existence of the user and whether the user has enough money in the account to complete the order
+- Inventory service module it is used to check the existence of the product and whether there is enough product in stock to fulfill the order
+
+
+## Technologies used
+- **Java 21**
+- **Spring Boot 3.3.3**
+- **PostgreSQL**
+- **Spring Data JPA**
+- **Apache Commons**
+- **Apache Kafka**
+
+
+## Business logic behind communication
+
+
 ## Stream changes from the database
 
 ![StreamChangesFromDb.png](art/stream_changes_from_db.png)
@@ -163,4 +182,11 @@ Currently, inside the column "aggregate_type" we have data ORDER, CUSTOMER, INVE
 In this part "${routedByValue}.events" routedByValue is replaced by ORDER, CUSTOMER, INVENTORY so the actual topic name is "ORDER.events", "CUSTOMER.events", "INVENTORY.events".
 
 
+## Debezium UI
+- It is used for graphical display of connectors and their statuses
+- If we use Debezium connect cluster in the header, it is possible to select the desired instance of Debezium connect and see details about it
+- Within the graphical interface, it is very easy to pause, continue, restart or delete the Debezium connector
+- Through the graphical interface, it is easy to create a connector through the built-in wizard for each type of database
+- The development of this tool is in an incubation state, which means that UI behavior can change from version to version
 
+![OutboxPatternDemo.png](art/debezium_ui.png)
