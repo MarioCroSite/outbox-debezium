@@ -47,6 +47,45 @@ a better solution is to use the CDC mechanism through the outbox pattern.
 
 ## Business logic behind communication
 
+### Happy case
+![HappyCase.png](art/happy_case.png)
+
+The user adds products to the cart and creates an order. The data is saved in the order and in the outbox table. 
+Debezium reads the data saved in the outbox table and redirects the message to a specific topic according to the name of the "AggregateType" column.
+Inside the column "Type" there is information about which type of event it is, in this case the "ORDER_CREATED" event type is sent.
+Customer service reads the event "ORDER_CREATED" and in case the user has enough money in the account, that money is reserved.
+A new event "RESERVE_CUSTOMER_BALANCE_SUCCESSFULLY" is created and sent to the outbox table.
+The event comes to the Order service, where the data is sent to the outbox table with the same event.
+The inventory service receives the event "RESERVE_CUSTOMER_BALANCE_SUCCESSFULLY" and starts checking whether there is enough product in stock.
+If there are enough products in stock, the event "RESERVE_PRODUCT_STOCK_SUCCESSFULLY" is created and sent to the outbox table.
+The order service receives the event "RESERVE_PRODUCT_STOCK_SUCCESSFULLY" and the order is transferred to the completed status.
+
+### Unhappy case (1)
+![UnHappyCase1.png](art/unhappy_case1.png)
+
+The user adds products to the cart and creates an order. The data is saved in the order and in the outbox table.
+Debezium reads the data saved in the outbox table and redirects the message to a specific topic according to the name of the "AggregateType" column.
+Inside the column "Type" there is information about which type of event it is, in this case the "ORDER_CREATED" event type is sent.
+Customer service reads the event "ORDER_CREATED" and in case the user has enough money in the account, that money is reserved.
+A new event "RESERVE_CUSTOMER_BALANCE_SUCCESSFULLY" is created and sent to the outbox table.
+The event comes to the Order service, where the data is sent to the outbox table with the same event.
+The inventory service receives the event "RESERVE_CUSTOMER_BALANCE_SUCCESSFULLY" and starts checking whether there is enough product in stock.
+In this case, there is not enough product in stock and the event "RESERVE_PRODUCT_STOCK_FAILED" is created. 
+The newly created event is sent to the outbox table.
+The event "RESERVE_PRODUCT_STOCK_FAILED" arrives in the Order service where the order is cancelled. 
+A new event "COMPENSATE_CUSTOMER_BALANCE" is created and sent to the outbox table.
+The event "COMPENSATE_CUSTOMER_BALANCE" arrives in the Customer service where the reserved money is returned to the user's account.
+
+### Unhappy case (2)
+![UnHappyCase2.png](art/unhappy_case2.png)
+
+The user adds products to the cart and creates an order. The data is saved in the order and in the outbox table.
+Debezium reads the data saved in the outbox table and redirects the message to a specific topic according to the name of the "AggregateType" column.
+Inside the column "Type" there is information about which type of event it is, in this case the "ORDER_CREATED" event type is sent.
+Customer service reads the "ORDER_CREATED" event and in this case the customer does not have enough money in the account.
+Event "RESERVE_CUSTOMER_BALANCE_FAILED" is created and sent to the outbox table.
+Order service receives the event "RESERVE_CUSTOMER_BALANCE_FAILED" and the order is cancelled.
+
 
 ## Stream changes from the database
 
